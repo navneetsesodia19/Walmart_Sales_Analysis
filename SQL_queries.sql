@@ -85,12 +85,17 @@ SET month_name = MONTHNAME(date);
 SELECT 
 	DISTINCT city
 FROM sales;
+--insight
+--the data have 3 uniques cities
 
 -- In which city is each branch?
 SELECT 
 	DISTINCT city,
     branch
 FROM sales;
+--insight 
+--Yangon A ,Naypyitaw B , Mandalay C
+
 
 -- --------------------------------------------------------------------
 -- ---------------------------- Product -------------------------------
@@ -100,15 +105,8 @@ FROM sales;
 SELECT
 	DISTINCT product_line
 FROM sales;
-
-
--- What is the most selling product line
-SELECT
-	SUM(quantity) as qty,
-    product_line
-FROM sales
-GROUP BY product_line
-ORDER BY qty DESC;
+--insight
+-- Total 6 product lines -- Food and beverages , Health and beauty , Sports and travel ,Fashion accessories , Home and lifestyle and Electronic accessories
 
 -- What is the most selling product line
 SELECT
@@ -117,23 +115,32 @@ SELECT
 FROM sales
 GROUP BY product_line
 ORDER BY qty DESC;
+--insight
+--The most selling product line is Electronic accessories
 
 -- What is the total revenue by month
 SELECT
-	month_name AS month,
+	month(date) AS monthx,
 	SUM(total) AS total_revenue
 FROM sales
-GROUP BY month_name 
+GROUP BY monthx 
 ORDER BY total_revenue;
-
+--insight 
+--1	116291.8680
+--2	95727.3765
+--3	108867.1500
 
 -- What month had the largest COGS?
 SELECT
-	month_name AS month,
+	month(date) AS monthx,
 	SUM(cogs) AS cogs
 FROM sales
-GROUP BY month_name 
+GROUP BY monthx
 ORDER BY cogs;
+--insight
+--1	110754.16
+--2	91168.93
+--3	103683.00
 
 
 -- What product line had the largest revenue?
@@ -143,6 +150,8 @@ SELECT
 FROM sales
 GROUP BY product_line
 ORDER BY total_revenue DESC;
+--insight
+-- Food and beverages	56144.8440
 
 -- What is the city with the largest revenue?
 SELECT
@@ -152,7 +161,8 @@ SELECT
 FROM sales
 GROUP BY city, branch 
 ORDER BY total_revenue;
-
+--insight
+--Naypyitaw	110490.7755
 
 -- What product line had the largest VAT?
 SELECT
@@ -161,7 +171,8 @@ SELECT
 FROM sales
 GROUP BY product_line
 ORDER BY avg_tax DESC;
-
+--insight
+--Home and lifestyle	16.03033124
 
 -- Fetch each product line and add a column to those product 
 -- line showing "Good", "Bad". Good if its greater than average sales
@@ -187,6 +198,10 @@ SELECT
 FROM sales
 GROUP BY branch
 HAVING SUM(quantity) > (SELECT AVG(quantity) FROM sales);
+--insight
+--A	1849
+--C	1828
+--B	1795
 
 
 -- What is the most common product line by gender
@@ -197,6 +212,10 @@ SELECT
 FROM sales
 GROUP BY gender, product_line
 ORDER BY total_cnt DESC;
+--insight
+--Female	Fashion accessories	96
+--Male	        Health and beauty	88
+
 
 -- What is the average rating of each product line
 SELECT
@@ -205,6 +224,13 @@ SELECT
 FROM sales
 GROUP BY product_line
 ORDER BY avg_rating DESC;
+--insight
+--7.11	Food and beverages
+--7.03	Fashion accessories
+-- 6.98	Health and beauty
+-- 6.91	Electronic accessories
+-- 6.86	Sports and travel
+-- 6.84	Home and lifestyle
 
 -- --------------------------------------------------------------------
 -- --------------------------------------------------------------------
@@ -217,11 +243,18 @@ ORDER BY avg_rating DESC;
 SELECT
 	DISTINCT customer_type
 FROM sales;
+-- insight
+-- Normal
+-- Member
 
 -- How many unique payment methods does the data have?
 SELECT
 	DISTINCT payment
 FROM sales;
+-- insight
+-- Credit card
+-- Ewallet
+-- Cash
 
 
 -- What is the most common customer type?
@@ -231,6 +264,8 @@ SELECT
 FROM sales
 GROUP BY customer_type
 ORDER BY count DESC;
+-- insight
+-- Member	499
 
 -- Which customer type buys the most?
 SELECT
@@ -238,7 +273,9 @@ SELECT
     COUNT(*)
 FROM sales
 GROUP BY customer_type;
-
+-- insight
+-- Normal	496
+-- Member	499
 
 -- What is the gender of most of the customers?
 SELECT
@@ -247,7 +284,9 @@ SELECT
 FROM sales
 GROUP BY gender
 ORDER BY gender_cnt DESC;
-
+-- insight
+-- Male	498
+-- Female	497
 -- What is the gender distribution per branch?
 SELECT
 	gender,
@@ -256,6 +295,13 @@ FROM sales
 WHERE branch = "C"
 GROUP BY gender
 ORDER BY gender_cnt DESC;
+-- insight
+-- Female	177
+-- Male	150
+
+
+
+
 -- Gender per branch is more or less the same hence, I don't think has
 -- an effect of the sales per branch and other factors.
 
@@ -329,6 +375,8 @@ SELECT
 FROM sales
 GROUP BY customer_type
 ORDER BY total_revenue;
+--insight
+-- member pay the most revenue
 
 -- Which city has the largest tax/VAT percent?
 SELECT
@@ -337,6 +385,8 @@ SELECT
 FROM sales
 GROUP BY city 
 ORDER BY avg_tax_pct DESC;
+--insight
+-- Naypyitaw pay largest tax percentage
 
 -- Which customer type pays the most in VAT?
 SELECT
@@ -345,6 +395,7 @@ SELECT
 FROM sales
 GROUP BY customer_type
 ORDER BY total_tax;
-
+--insight
+-- both type of customers ie. normal or member pay approximately same amount of tax but member say slightly higher
 -- --------------------------------------------------------------------
 -- --------------------------------------------------------------------
